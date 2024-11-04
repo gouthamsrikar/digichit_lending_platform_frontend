@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onemoney_hack/api/services/chitfund_service.dart';
+import 'package:onemoney_hack/di/connect_token_provider.dart';
 import 'package:onemoney_hack/models/api/fetch_communties_response.dart';
 import 'package:onemoney_hack/models/api/fetch_loans_response.dart';
 import 'package:onemoney_hack/ui_commons/equal_ui.dart';
@@ -31,7 +32,8 @@ class _CommuntiesState extends State<Communties> {
 
   Future<void> fetchCommunties() async {
     await fetchLoans();
-    final response = await chitFundService.getCommunites("1");
+    final response = await chitFundService
+        .getCommunites(ConnectTokenProvider.userId.toString());
     final tempCommunites = response.communties ?? [];
 
     final tempCommunityLedger = response.communtyLedger ?? [];

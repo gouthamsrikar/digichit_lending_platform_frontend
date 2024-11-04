@@ -12,9 +12,11 @@ class SideBar extends StatelessWidget {
     super.key,
     required this.selectedIndex,
     required this.onChanged,
+    required this.name,
   });
   final int selectedIndex;
   final ValueChanged<int> onChanged;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +128,9 @@ class SideBar extends StatelessWidget {
                     radius: 10,
                     backgroundColor: Color(0xFFEBFFC2),
                     child: Text(
-                      'A',
+                      name != null && name.isNotEmpty
+                          ? name[0].toUpperCase()
+                          : '',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Color(0xFF008838),
@@ -140,7 +144,7 @@ class SideBar extends StatelessWidget {
                   const SizedBox(width: 4),
                   Flexible(
                     child: Text(
-                      'Anand Sreekumar Menon',
+                      name,
                       style: TextStyle(
                           color: selectedIndex == 2
                               ? Colors.white

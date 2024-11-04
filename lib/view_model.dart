@@ -1,11 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:onemoney_hack/api/services/chitfund_service.dart';
 import 'url_config_manager.dart';
 import 'handlers/base_handler.dart';
-import 'models/sdk_init_req.dart';
-import 'models/sdk_init_res.dart';
-import 'services/api_service.dart';
 import 'package:uuid/uuid.dart';
 
 enum ApiStates { initial, loading, success, error }
@@ -28,34 +26,20 @@ class ViewModel extends ChangeNotifier {
 
   final urlManager = UrlConfigManager.getInstance();
 
-  TransactionInput transactionInput = TransactionInput();
-
   static String idempotencyId = "";
 
   Future<void> sdkInit({required String mobile}) async {
     final uuid = const Uuid().v4();
     idempotencyId = uuid;
-    transactionInput.mobile = mobile;
     setState(ApiStates.loading);
-    final req = SdkInitReq(
-      clientId: urlManager.clientId,
-      clientSecret: urlManager.clientSecret,
-      gatewayInstanceId: urlManager.instanceId,
-      idempotencyId: uuid,
-      keys: [],
-      transactionInput: transactionInput,
-    );
-    try {
-      final result = await ApiService().sdkInit(req);
-      if (result.statusCode == 200 || result.statusCode == 201) {
-        final res = SDKInitResult.fromJson(result.data);
-        BaseHandler.getHandler().openSdk(
-            urlManager.clientId, uuid, res.token, transactionInput.mobile);
 
-        setState(ApiStates.loading);
-      } else {
-        setState(ApiStates.error);
-      }
+    try {
+      final result = await ChitFundService().initTransaction(mobile);
+
+      BaseHandler.getHandler().openSdk(
+          urlManager.clientId, result.idempotencyId, result.token, mobile);
+
+      setState(ApiStates.loading);
     } catch (e) {
       setState(ApiStates.error);
     }

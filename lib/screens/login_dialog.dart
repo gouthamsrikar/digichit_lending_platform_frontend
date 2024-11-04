@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:onemoney_hack/api/logging/logger.dart';
-import 'package:onemoney_hack/openai_repo.dart';
+import 'package:onemoney_hack/di/connect_token_provider.dart';
 import 'package:onemoney_hack/screens/dashboard.dart';
-import 'package:onemoney_hack/services/api_service.dart';
 import 'package:onemoney_hack/src/gen/assets.gen.dart';
 import 'package:onemoney_hack/ui_commons/equal_ui.dart';
 import 'package:onemoney_hack/utils/navigation_utils.dart';
@@ -209,7 +207,7 @@ class _LoginDialogState extends State<LoginDialog> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -232,10 +230,10 @@ class _LoginDialogState extends State<LoginDialog> {
                   ),
                 ],
               ),
-              Spacer(),
+              const Spacer(),
               Assets.svg.digiLoans.svg(),
               const SizedBox(width: 4),
-              Text(
+              const Text(
                 'DigiChits',
                 style: TextStyle(
                   color: Colors.black,
@@ -247,7 +245,7 @@ class _LoginDialogState extends State<LoginDialog> {
             ],
           ),
           const SizedBox(height: 48),
-          Text(
+          const Text(
             'Login/Signup',
             style: TextStyle(
               color: Color(0xFF4E4E4E),
@@ -276,7 +274,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   color: Colors.yellow[600],
                 ),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   'Verify and join your first chit in 5 mins',
                   style: TextStyle(
                     color: Color(0xFF757575),
@@ -296,6 +294,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 return EFilledButton(
                   onTap: phone.value.length == 10
                       ? () async {
+                          ConnectTokenProvider.phoneno = phone.value;
                           viewModel.sdkInit(
                             mobile: phone.value,
                           );

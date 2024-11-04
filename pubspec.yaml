@@ -99,7 +99,6 @@ flutter:
     - assets/svg/
     - assets/images/
 
-    - env/envs/
     - env/
   
 

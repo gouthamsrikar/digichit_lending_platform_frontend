@@ -145,7 +145,8 @@ class LoanAmountDialog extends StatelessWidget {
                                                         loanAmount.value) /
                                                     12) *
                                                 data.repaymentPeriodInMonths!)) /
-                                        data.repaymentPeriodInMonths!).floorToDouble()
+                                        data.repaymentPeriodInMonths!)
+                                    .floorToDouble()
                                     .toString()
                                 : '-',
                             style: TextStyle(

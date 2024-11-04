@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onemoney_hack/api/services/chitfund_service.dart';
+import 'package:onemoney_hack/di/connect_token_provider.dart';
 import 'package:onemoney_hack/models/api/fetch_communties_response.dart';
 import 'package:onemoney_hack/models/api/fetch_loans_response.dart';
 import 'package:onemoney_hack/screens/profile_page.dart';
@@ -49,7 +50,8 @@ class _YourLoansState extends State<YourLoans> {
   final Map<int, LoansModels> loanMap = {};
 
   Future<void> fetchLoans() async {
-    final response = await chitFundService.getLoans("1");
+    final response =
+        await chitFundService.getLoans(ConnectTokenProvider.userId.toString());
     loans = response.loans ?? [];
 
     loans.forEach(

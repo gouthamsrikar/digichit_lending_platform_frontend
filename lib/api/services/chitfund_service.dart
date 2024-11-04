@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:onemoney_hack/models/api/fetch_communties_response.dart';
 import 'package:onemoney_hack/models/api/fetch_loans_response.dart';
+import 'package:onemoney_hack/models/api/fetch_profile_response.dart';
+import 'package:onemoney_hack/models/api/init_transaction_response.dart';
 
 class ChitFundService {
   final Dio _dio;
@@ -38,5 +40,23 @@ class ChitFundService {
       "loan_amount": loanAmount,
     });
     return FetchLoansResponse.fromJson(response.data);
+  }
+
+  Future<InitTransactionResponse> initTransaction(
+    String phoneno,
+  ) async {
+    final response = await _dio.post('/init/', data: {"phone_number": phoneno});
+    return InitTransactionResponse.fromJson(response.data);
+  }
+
+  Future<FetchProfileResponse> createAndFetchUserProfile(
+    String idempotencyId,
+    String phoneno,
+  ) async {
+    final response = await _dio.post('/user/idg/', data: {
+      "idempotency_id": idempotencyId,
+      "phone_number": phoneno,
+    });
+    return FetchProfileResponse.fromJson(response.data);
   }
 }

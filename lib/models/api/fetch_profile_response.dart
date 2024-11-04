@@ -1,18 +1,30 @@
 class FetchProfileResponse {
   ProfileData? profileData;
+  List<BankStatement>? bankStatement;
 
   FetchProfileResponse({this.profileData});
 
   FetchProfileResponse.fromJson(Map<String, dynamic> json) {
-    profileData = json['profile_data'] != null
-        ? new ProfileData.fromJson(json['profile_data'])
-        : null;
+    profileData =
+        json['user'] != null ? new ProfileData.fromJson(json['user']) : null;
+
+    if (json['bank_statement'] != null) {
+      bankStatement = <BankStatement>[];
+      json['bank_statement'].forEach((v) {
+        bankStatement!.add(new BankStatement.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.profileData != null) {
-      data['profile_data'] = this.profileData!.toJson();
+      data['user'] = this.profileData!.toJson();
+    }
+
+    if (this.bankStatement != null) {
+      data['bank_statement'] =
+          this.bankStatement!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -87,6 +99,67 @@ class ProfileData {
     data['emi_to_income_ratio'] = this.emiToIncomeRatio;
     data['credit_to_debit_ratio'] = this.creditToDebitRatio;
     data['phone_number'] = this.phoneNumber;
+    return data;
+  }
+}
+
+class BankStatement {
+  String? createdAt;
+  String? updatedAt;
+  String? deletedAt;
+  int? iD;
+  int? userId;
+  String? monthName;
+  int? noOfDebitTransactions;
+  int? noOfCreditTransactions;
+  double? totalCreditAmount;
+  String? year;
+  double? totalDebitAmount;
+  int? averageEodBalance;
+
+  BankStatement(
+      {this.createdAt,
+      this.updatedAt,
+      this.deletedAt,
+      this.iD,
+      this.userId,
+      this.monthName,
+      this.noOfDebitTransactions,
+      this.noOfCreditTransactions,
+      this.totalCreditAmount,
+      this.year,
+      this.totalDebitAmount,
+      this.averageEodBalance});
+
+  BankStatement.fromJson(Map<String, dynamic> json) {
+    createdAt = json['CreatedAt'];
+    updatedAt = json['UpdatedAt'];
+    deletedAt = json['DeletedAt'];
+    iD = json['ID'];
+    userId = json['user_id'];
+    monthName = json['month_name'];
+    noOfDebitTransactions = json['no_of_debit_transactions'];
+    noOfCreditTransactions = json['no_of_credit_transactions'];
+    totalCreditAmount = json['total_credit_amount'];
+    year = json['year'];
+    totalDebitAmount = json['total_debit_amount'];
+    averageEodBalance = json['average_eod_balance'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['CreatedAt'] = this.createdAt;
+    data['UpdatedAt'] = this.updatedAt;
+    data['DeletedAt'] = this.deletedAt;
+    data['ID'] = this.iD;
+    data['user_id'] = this.userId;
+    data['month_name'] = this.monthName;
+    data['no_of_debit_transactions'] = this.noOfDebitTransactions;
+    data['no_of_credit_transactions'] = this.noOfCreditTransactions;
+    data['total_credit_amount'] = this.totalCreditAmount;
+    data['year'] = this.year;
+    data['total_debit_amount'] = this.totalDebitAmount;
+    data['average_eod_balance'] = this.averageEodBalance;
     return data;
   }
 }
