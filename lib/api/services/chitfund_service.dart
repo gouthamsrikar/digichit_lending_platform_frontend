@@ -6,7 +6,8 @@ import 'package:onemoney_hack/models/api/init_transaction_response.dart';
 
 class ChitFundService {
   final Dio _dio;
-  ChitFundService() : _dio = Dio(BaseOptions(baseUrl: "http://localhost:8080"));
+  ChitFundService()
+      : _dio = Dio(BaseOptions(baseUrl: "https://digichits.staging.equal.in"));
 
   Future<FetchCommunitesResponse> getCommunites(String userId) async {
     final response = await _dio.get('/community/$userId');
@@ -53,7 +54,7 @@ class ChitFundService {
     String idempotencyId,
     String phoneno,
   ) async {
-    final response = await _dio.post('/user/idg/', data: {
+    final response = await _dio.post('/user/idg', data: {
       "idempotency_id": idempotencyId,
       "phone_number": phoneno,
     });

@@ -75,7 +75,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '53/100',
+                            '${profileData.digitScore}/100',
                             style: TextStyle(
                               color: Color(0xFF008838),
                               fontSize: 32,
@@ -250,7 +250,7 @@ class ProfilePage extends StatelessWidget {
               ),
               AmountInfoWidget(
                 title: "Community Level",
-                amount: "Starter",
+                amount: profileData.communityLevel ?? '',
               ),
               const SizedBox(width: 0),
             ],
