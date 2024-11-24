@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:onemoney_hack/api/services/chitfund_service.dart';
+import 'package:onemoney_hack/di/connect_token_provider.dart';
 import 'url_config_manager.dart';
 import 'handlers/base_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -35,6 +36,7 @@ class ViewModel extends ChangeNotifier {
 
     try {
       final result = await ChitFundService().initTransaction(mobile);
+      ConnectTokenProvider.idempotencyId = result.idempotencyId!;
 
       BaseHandler.getHandler().openSdk(
           urlManager.clientId, result.idempotencyId, result.token, mobile);

@@ -46,6 +46,7 @@ class ProfileData {
   double? emiToIncomeRatio;
   double? creditToDebitRatio;
   String? phoneNumber;
+  bool? bankStatementFetch;
 
   ProfileData(
       {this.createdAt,
@@ -62,7 +63,8 @@ class ProfileData {
       this.avgBalance,
       this.emiToIncomeRatio,
       this.creditToDebitRatio,
-      this.phoneNumber});
+      this.phoneNumber,
+      this.bankStatementFetch});
 
   ProfileData.fromJson(Map<String, dynamic> json) {
     createdAt = json['CreatedAt'];
@@ -80,6 +82,7 @@ class ProfileData {
     emiToIncomeRatio = json['emi_to_income_ratio'];
     creditToDebitRatio = json['credit_to_debit_ratio'];
     phoneNumber = json['phone_number'];
+    bankStatementFetch = json['bank_statement_fetch'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,6 +102,7 @@ class ProfileData {
     data['emi_to_income_ratio'] = this.emiToIncomeRatio;
     data['credit_to_debit_ratio'] = this.creditToDebitRatio;
     data['phone_number'] = this.phoneNumber;
+    data['bank_statement_fetch'] = this.bankStatementFetch;
     return data;
   }
 }

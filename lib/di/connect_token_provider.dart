@@ -1,9 +1,9 @@
 import 'i_token_provider.dart';
 
 class ConnectTokenProvider extends ITokenProvider {
-  static String phoneno = "7893016461";
-  static int userId = 1;
-  static String idempotencyId = "3faa3f2c-bbc2-401c-8824-bb738b7e7a46";
+  static String phoneno = "";
+  static int userId = 0;
+  static String idempotencyId = "";
 
   @override
   Future<Map<String, String?>?> tokenHeadersCallBack(

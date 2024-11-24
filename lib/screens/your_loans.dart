@@ -32,7 +32,8 @@ class _YourLoansState extends State<YourLoans> {
 
   Future<void> fetchCommunties() async {
     await fetchLoans();
-    final response = await chitFundService.getCommunites("1");
+    final response = await chitFundService
+        .getCommunites(ConnectTokenProvider.userId.toString());
 
     communites = response.communties ?? [];
 

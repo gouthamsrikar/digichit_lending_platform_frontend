@@ -79,7 +79,8 @@ class _CommuntiesState extends State<Communties> {
   }
 
   Future<void> fetchLoans() async {
-    final response = await chitFundService.getLoans("1");
+    final response =
+        await chitFundService.getLoans(ConnectTokenProvider.userId.toString());
     loans = response.loans ?? [];
     // loanCommuntyIds = loans.map((e) => e.communityId).toList();
   }

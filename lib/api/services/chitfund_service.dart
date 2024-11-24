@@ -7,7 +7,10 @@ import 'package:onemoney_hack/models/api/init_transaction_response.dart';
 class ChitFundService {
   final Dio _dio;
   ChitFundService()
-      : _dio = Dio(BaseOptions(baseUrl: "https://digichits.staging.equal.in"));
+      : _dio = Dio(BaseOptions(
+          // baseUrl: "http://localhost:80",
+          baseUrl: "https://digichits.staging.equal.in",
+        ));
 
   Future<FetchCommunitesResponse> getCommunites(String userId) async {
     final response = await _dio.get('/community/$userId');

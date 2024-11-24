@@ -14,7 +14,10 @@ class ProfilePage extends StatelessWidget {
     super.key,
     required this.profileData,
     required this.monthlyData,
+    required this.fetchProfile,
   });
+
+  final GestureTapCallback fetchProfile;
 
   ProfileData profileData;
 
@@ -26,6 +29,7 @@ class ProfilePage extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -41,141 +45,176 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 16),
             _profileInformation(),
             const SizedBox(height: 16),
-            Text(
-              'Insights',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-                fontFamily: 'Red Hat Display',
-                fontWeight: FontWeight.w500,
-                height: 0,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ECard(
-              borderColor: Color(0xFFF5F5F5),
-              radius: 8,
-              padding: EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            ...(profileData.bankStatementFetch ?? false)
+                ? [
+                    Text(
+                      'Insights',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontFamily: 'Red Hat Display',
+                        fontWeight: FontWeight.w500,
+                        height: 0,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ECard(
+                      borderColor: Color(0xFFF5F5F5),
+                      radius: 8,
+                      padding: EdgeInsets.all(24),
+                      child: Column(
                         children: [
-                          Text(
-                            'DigiChit Score',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Red Hat Text',
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Row(
+                            children: [
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'DigiChit Score',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontFamily: 'Red Hat Text',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${profileData.digitScore}/100',
+                                    style: TextStyle(
+                                      color: Color(0xFF008838),
+                                      fontSize: 32,
+                                      fontFamily: 'Red Hat Mono',
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
+                                  Text(
+                                    '(Powered by Onemoney)',
+                                    style: TextStyle(
+                                      color: Color(0xFF676767),
+                                      fontSize: 10,
+                                      fontFamily: 'Red Hat Text',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                height: 60,
+                                color: Color(0xFFF5F5F5),
+                                width: 1,
+                                margin: EdgeInsets.symmetric(horizontal: 12),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Two monthly payments away from increasing your DigiChit Score',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontFamily: 'Red Hat Text',
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Make timely deposits and loan repayments to increase your score and gain access to communities with higher funds and lower interest rates',
+                                      style: TextStyle(
+                                          color: Color(0xFF757575),
+                                          fontSize: 16,
+                                          fontFamily: 'Red Hat Text',
+                                          fontWeight: FontWeight.w400,
+                                          height: 1),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            '${profileData.digitScore}/100',
-                            style: TextStyle(
-                              color: Color(0xFF008838),
-                              fontSize: 32,
-                              fontFamily: 'Red Hat Mono',
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 1,
-                            ),
+                          const SizedBox(height: 32),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              AccountDataWidget(
+                                title: 'Avg Monthly credit',
+                                amount: formatRupees(
+                                    profileData.monthlyIncome ?? 0),
+                                info: 'Your average monthly incoming funds',
+                              ),
+                              AccountDataWidget(
+                                title: 'Average Balance',
+                                amount:
+                                    formatRupees(profileData.avgBalance ?? 0),
+                                info:
+                                    'Your average end-of-day account balance.',
+                              ),
+                              AccountDataWidget(
+                                title: 'EMI to Income Ratio',
+                                amount: '30.9%',
+                                info: 'Percentage of income spent on EMIs',
+                              ),
+                              AccountDataWidget(
+                                title: 'Credit to Debit Ratio',
+                                amount:
+                                    '${(((profileData.creditToDebitRatio ?? 0)) * 100).floor()}%',
+                                info:
+                                    'Balance between your income and spending',
+                              ),
+                              const SizedBox(width: 0),
+                            ],
                           ),
-                          Text(
-                            '(Powered by Onemoney)',
-                            style: TextStyle(
-                              color: Color(0xFF676767),
-                              fontSize: 10,
-                              fontFamily: 'Red Hat Text',
-                              fontWeight: FontWeight.w500,
-                            ),
+                          const SizedBox(height: 32),
+                          SizedBox(
+                            width: 630,
+                            child: SalaryExpenseBarChart(
+                                data: monthlyData
+                                    .map((e) => SalaryExpenseData(
+                                          e.monthName ?? '',
+                                          e.totalCreditAmount ?? 0,
+                                          e.totalDebitAmount ?? 0,
+                                        ))
+                                    .toList()),
                           ),
                         ],
                       ),
-                      Container(
-                        height: 60,
-                        color: Color(0xFFF5F5F5),
-                        width: 1,
-                        margin: EdgeInsets.symmetric(horizontal: 12),
-                      ),
-                      Expanded(
+                    ),
+                  ]
+                : [
+                    Center(
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Two monthly payments away from increasing your DigiChit Score',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontFamily: 'Red Hat Text',
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'Make timely deposits and loan repayments to increase your score and gain access to communities with higher funds and lower interest rates',
-                              style: TextStyle(
-                                  color: Color(0xFF757575),
-                                  fontSize: 16,
-                                  fontFamily: 'Red Hat Text',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1),
-                            ),
-                          ],
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Your bank statement is being processed. pls wait and try again in few minutes',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: 'Red Hat Display',
+                            fontWeight: FontWeight.w500,
+                            height: 0,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AccountDataWidget(
-                        title: 'Avg Monthly credit',
-                        amount: formatRupees(profileData.monthlyIncome ?? 0),
-                        info: 'Your average monthly incoming funds',
-                      ),
-                      AccountDataWidget(
-                        title: 'Average Balance',
-                        amount: formatRupees(profileData.avgBalance ?? 0),
-                        info: 'Your average end-of-day account balance.',
-                      ),
-                      AccountDataWidget(
-                        title: 'EMI to Income Ratio',
-                        amount: '30.9%',
-                        info: 'Percentage of income spent on EMIs',
-                      ),
-                      AccountDataWidget(
-                        title: 'Credit to Debit Ratio',
-                        amount:
-                            '${(((profileData.creditToDebitRatio ?? 0)) * 100).floor()}%',
-                        info: 'Balance between your income and spending',
-                      ),
-                      const SizedBox(width: 0),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: 630,
-                    child: SalaryExpenseBarChart(
-                        data: monthlyData
-                            .map((e) => SalaryExpenseData(
-                                  e.monthName ?? '',
-                                  e.totalCreditAmount ?? 0,
-                                  e.totalDebitAmount ?? 0,
-                                ))
-                            .toList()),
-                  ),
-                ],
-              ),
-            ),
+                        const SizedBox(height: 18),
+                        SizedBox(
+                          width: 200,
+                          child: EFilledButton.text(
+                            onTap: () {
+                              fetchProfile();
+                            },
+                            title: "fetch bank details",
+                          ),
+                        )
+                      ],
+                    ))
+                  ]
           ],
         ),
       ),
@@ -223,7 +262,7 @@ class ProfilePage extends StatelessWidget {
               VerifiedWithEqualBadge(),
               Spacer(),
               Text(
-                'Joined on 04/11/2024',
+                'Joined on ${profileData.joinDate}',
                 textAlign: TextAlign.right,
                 style: TextStyle(
                   color: Color(0xFF757575),
@@ -244,14 +283,16 @@ class ProfilePage extends StatelessWidget {
                 title: "PAN",
                 amount: profileData.panNo ?? '',
               ),
-              AmountInfoWidget(
-                title: "Bank Account Number",
-                amount: profileData.bankAccountNo ?? '',
-              ),
-              AmountInfoWidget(
-                title: "Community Level",
-                amount: profileData.communityLevel ?? '',
-              ),
+              if (profileData.bankStatementFetch ?? false)
+                AmountInfoWidget(
+                  title: "Bank Account Number",
+                  amount: profileData.bankAccountNo ?? '',
+                ),
+              if (profileData.bankStatementFetch ?? false)
+                AmountInfoWidget(
+                  title: "Community Level",
+                  amount: profileData.communityLevel ?? '',
+                ),
               const SizedBox(width: 0),
             ],
           ),

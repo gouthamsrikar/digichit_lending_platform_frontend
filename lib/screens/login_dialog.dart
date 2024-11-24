@@ -260,6 +260,14 @@ class _LoginDialogState extends State<LoginDialog> {
             onChanged: (value) {
               phone.value = value;
             },
+            onFieldSubmitted: (value) async {
+              if (phone.value.length == 10)
+                ConnectTokenProvider.phoneno = phone.value;
+
+              viewModel.sdkInit(
+                mobile: phone.value,
+              );
+            },
           ),
           const SizedBox(height: 36),
           Padding(
@@ -295,13 +303,10 @@ class _LoginDialogState extends State<LoginDialog> {
                   onTap: phone.value.length == 10
                       ? () async {
                           ConnectTokenProvider.phoneno = phone.value;
+
                           viewModel.sdkInit(
                             mobile: phone.value,
                           );
-                          // final data =
-                          //     await OpenaiRepo().generateInsights(aaData);
-                          // ELogger.get().info(data);
-                          // pushReplacementView(context, Dashboard());
                         }
                       : null,
                   child: Row(

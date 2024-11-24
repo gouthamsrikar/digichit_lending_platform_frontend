@@ -8,15 +8,16 @@ import '../ui_commons/equal_ui.dart';
 import '../ui_commons/src/widgets/e_filled_button.dart';
 
 class SideBar extends StatelessWidget {
-  SideBar({
-    super.key,
-    required this.selectedIndex,
-    required this.onChanged,
-    required this.name,
-  });
+  SideBar(
+      {super.key,
+      required this.selectedIndex,
+      required this.onChanged,
+      required this.name,
+      required this.isBankFetched});
   final int selectedIndex;
   final ValueChanged<int> onChanged;
   final String name;
+  final bool isBankFetched;
 
   @override
   Widget build(BuildContext context) {
@@ -51,57 +52,59 @@ class SideBar extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 40),
-          EFilledButton(
-            onTap: () {
-              onChanged(0);
-            },
-            enabledButtonTextColor:
-                selectedIndex == 0 ? EColors.EQUAL_GREEN : Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.people,
-                    color: selectedIndex == 0 ? Colors.white : Colors.black,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Communities',
-                    style: EtextStyle.style.size20.w500.copyWith(
+          if (isBankFetched)
+            EFilledButton(
+              onTap: () {
+                onChanged(0);
+              },
+              enabledButtonTextColor:
+                  selectedIndex == 0 ? EColors.EQUAL_GREEN : Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.people,
                       color: selectedIndex == 0 ? Colors.white : Colors.black,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Text(
+                      'Communities',
+                      style: EtextStyle.style.size20.w500.copyWith(
+                        color: selectedIndex == 0 ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           const SizedBox(height: 20),
-          EFilledButton(
-            onTap: () {
-              onChanged(1);
-            },
-            enabledButtonTextColor:
-                selectedIndex == 1 ? EColors.EQUAL_GREEN : Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.currency_rupee_sharp,
-                    color: selectedIndex == 1 ? Colors.white : Colors.black,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Your Loans',
-                    style: EtextStyle.style.size20.w500.copyWith(
+          if (isBankFetched)
+            EFilledButton(
+              onTap: () {
+                onChanged(1);
+              },
+              enabledButtonTextColor:
+                  selectedIndex == 1 ? EColors.EQUAL_GREEN : Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.currency_rupee_sharp,
                       color: selectedIndex == 1 ? Colors.white : Colors.black,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    Text(
+                      'Your Loans',
+                      style: EtextStyle.style.size20.w500.copyWith(
+                        color: selectedIndex == 1 ? Colors.white : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
           Spacer(),
           Text(
             'YOUR PROFILE',
